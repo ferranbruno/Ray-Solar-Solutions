@@ -43,10 +43,12 @@ const providerLinks = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/products', icon: ShoppingBag, label: 'Products' },
   { to: '/about', icon: Info, label: 'About' },
+  { to: '/support', icon: Headphones, label: 'Support' },
   { to: '/provider', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/provider/products', icon: Package, label: 'My products' },
   { to: '/provider/profile', icon: User, label: 'Profile' },
-  { to: '/support', icon: Headphones, label: 'Support' },
+  { to: '/customer/cart', icon: ShoppingCart, label: 'Cart' },
+  { to: '/customer/orders', icon: ClipboardList, label: 'Orders' },
 ];
 
 const adminLinks = [
@@ -58,6 +60,8 @@ const adminLinks = [
   { to: '/admin/providers', icon: Building2, label: 'Providers' },
   { to: '/admin/products', icon: Package, label: 'Products' },
   { to: '/admin/messages', icon: Mail, label: 'Messages' },
+  { to: '/customer/cart', icon: ShoppingCart, label: 'Cart' },
+  { to: '/customer/orders', icon: ClipboardList, label: 'Orders' },
 ];
 
 function getLinks() {
