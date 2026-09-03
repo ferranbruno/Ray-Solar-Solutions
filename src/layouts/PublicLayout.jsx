@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { User, LogOut, ChevronDown } from 'lucide-react';
 import GlobalSidebar from '../components/layout/GlobalSidebar';
@@ -10,11 +10,16 @@ function PublicLayout() {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem(TOKEN_KEY));
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const onStorage = () => setLoggedIn(!!localStorage.getItem(TOKEN_KEY));
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    setLoggedIn(!!localStorage.getItem(TOKEN_KEY));
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onPopState = () => setLoggedIn(!!localStorage.getItem(TOKEN_KEY));
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   const handleLogout = () => {
