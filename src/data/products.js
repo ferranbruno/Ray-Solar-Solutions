@@ -212,9 +212,16 @@ export const saveProducts = (nextProducts) => {
 
 export const getProductById = (id) => getProducts().find((product) => product.id === Number(id));
 
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=900&q=80',
+  'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=900&q=80',
+];
+
 const normalizeProduct = (product) => ({
   ...product,
-  image: getImageUrl(product.image_path),
+  image: getImageUrl(product.image_path) || FALLBACK_IMAGES[product.id % FALLBACK_IMAGES.length],
   status: product.is_active ? 'Approved' : 'Flagged',
 });
 

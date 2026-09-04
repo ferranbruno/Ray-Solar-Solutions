@@ -5,7 +5,11 @@
       "destination": "https://ray-solar-solutions-backend-1-74w4.onrender.com/api/:path*"
     },
     {
-      "source": "/((?!api).*)",
+      "source": "/uploads/:path*",
+      "destination": "https://ray-solar-solutions-backend-1-74w4.onrender.com/uploads/:path*"
+    },
+    {
+      "source": "/((?!api|uploads).*)",
       "destination": "/index.html"
     }
   ]
