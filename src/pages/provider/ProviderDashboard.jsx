@@ -12,18 +12,20 @@ function ProviderDashboard() {
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       apiRequest('/products/analytics'),
       apiRequest('/auth/me'),
     ])
-      .then(([analyticsData, userData]) => {
-        setAnalytics(analyticsData);
-        return apiRequest('/products?per_page=100').then((productsData) => {
-          const myProducts = productsData.products.filter(p => p.provider_id === userData.user.id);
-          setRecentProducts(myProducts.slice(0, 5));
-        });
+      .then(([analyticsResult, userResult]) => {
+        if (analyticsResult.status === 'fulfilled') setAnalytics(analyticsResult.value);
+        if (userResult.status === 'fulfilled') {
+          return apiRequest('/products?per_page=100').then((productsData) => {
+            const myProducts = productsData.products.filter(p => p.provider_id === userResult.value.user.id);
+            setRecentProducts(myProducts.slice(0, 5));
+          });
+        }
       })
-      .catch((requestError) => setError(requestError.message));
+      .catch(() => {});
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setAnimated(true));
     });

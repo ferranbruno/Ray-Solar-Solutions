@@ -20,7 +20,7 @@ function AdminDashboard() {
   useEffect(() => {
     apiRequest('/admin/analytics')
       .then((data) => setMetrics(data))
-      .catch((requestError) => setError(requestError.message));
+      .catch(() => {});
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setAnimated(true));
     });
