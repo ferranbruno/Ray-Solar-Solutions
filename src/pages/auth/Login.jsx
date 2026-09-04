@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Mail, Lock, Sun } from 'lucide-react';
+import { Mail, Lock, Sun, Eye, EyeOff } from 'lucide-react';
 import { apiRequest } from '../../data/api';
 
 const roleRoutes = {
@@ -9,10 +9,20 @@ const roleRoutes = {
   admin: '/admin',
 };
 
+function getStoredRole() {
+  return localStorage.getItem('ray-solar-role') || '';
+}
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  if (getStoredRole()) {
+    const role = getStoredRole();
+    return <Navigate to={roleRoutes[role] || '/customer'} replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +46,7 @@ export default function LoginPage() {
       localStorage.setItem('ray-solar-role', accountRole);
       localStorage.setItem('ray-solar-access-token', data.access_token);
       localStorage.setItem('ray-solar-refresh-token', data.refresh_token);
-      navigate('/');
+      navigate(destination);
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -84,12 +94,19 @@ export default function LoginPage() {
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#f5a623]" size={18} />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 placeholder="Enter your password"
                 required
-                className="w-full pl-11 pr-4 py-3.5 rounded-xl border-2 border-[#f1e6d6] bg-[#faf6ee] text-sm placeholder:text-[#B0B4BA] focus:outline-none focus:border-[#f5a623] focus:bg-white transition"
+                className="w-full pl-11 pr-11 py-3.5 rounded-xl border-2 border-[#f1e6d6] bg-[#faf6ee] text-sm placeholder:text-[#B0B4BA] focus:outline-none focus:border-[#f5a623] focus:bg-white transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#B0B4BA] hover:text-[#4a5565] transition"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
             <div className="mt-2 text-right">
               <Link to="/forgot-password" className="text-sm text-[#d9820b] font-semibold hover:underline">
